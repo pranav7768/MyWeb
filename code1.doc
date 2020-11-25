@@ -1,0 +1,70 @@
+
+
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+
+
+public partial class MasterPage : System.Web.UI.MasterPage
+{
+    protected void Page_Load(object sender, EventArgs e)
+    {
+
+    }
+    protected void RadioButton1_CheckedChanged(object sender, EventArgs e)
+    {
+         
+         if (RadioButton1.Checked)
+         {
+             RadioButton1.Text = "your gender is" + RadioButton1.Text;
+         }
+         else RadioButton2.Text = "your gender is" + RadioButton2.Text;
+    
+        
+
+        
+       
+    }
+    protected void Button2_Click(object sender, EventArgs e)
+    {
+
+
+
+        SqlConnection conn = new SqlConnection(@"Data Source='SPRUHA\VISHVASQLEXPRESS';Integrated Security=True;Pooling=False;Initial Catalog='employeedatabase'");
+            conn.Open();
+            string insertuser = "insert into EmpTable(EmpCode,Name,Department,Gender,DOB,JoiningDate,PrevExperience,Salary,Address)values(@EmpCode,@Name,@Department,@Gender,@DOB,@JoiningDate,@PrevExperience,@Salary,@Address)";
+            SqlCommand com = new SqlCommand(insertuser, conn);
+            com.Parameters.AddWithValue("@EmpCode", TextBox1.Text);
+            com.Parameters.AddWithValue("@Name", TextBox2.Text);
+            com.Parameters.AddWithValue("@Department",DropDownList1.SelectedIndex);
+            com.Parameters.AddWithValue("@Gender",RadioButton1.Text);
+            com.Parameters.AddWithValue("@DOB", TextBox3.Text);
+            com.Parameters.AddWithValue("@JoiningDate", TextBox4.Text);
+            com.Parameters.AddWithValue("@PrevExperience", TextBox5.Text);
+            com.Parameters.AddWithValue("@Salary", TextBox6.Text);
+            com.Parameters.AddWithValue("@Address", TextBox7.Text);
+            com.ExecuteNonQuery();
+
+            Response.Write("<script language=javascript>alert('Registered succesfully!')</script>");
+            Response.Redirect("second.aspx");
+            conn.Close();
+
+            
+        }
+      
+
+
+
+ }
+
+
+
+
